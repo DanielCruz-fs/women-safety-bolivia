@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Apoyo y Protección - Mujeres Seguras Bolivia</title>
+        <meta
+            name="description"
+            content="Recursos de apoyo, información sobre derechos y ayuda inmediata para mujeres en situación de violencia en Bolivia"
+        />
+
+        <!-- Google Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+
+        <!-- Font Awesome -->
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        />
+
+        <!-- Three.js -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            :root {
+                --primary-rose: #e8b4c8;
+                --primary-mauve: #c69cb7;
+                --accent-lavender: #a084ca;
+                --accent-periwinkle: #8e7ab5;
+                --soft-peach: #f4e4d7;
+                --warm-cream: #fff8f0;
+                --sage-green: #b8d4c8;
+                --deep-plum: #6b4e71;
+                --charcoal: #3a3a3a;
+                --light-gray: #f5f5f5;
+                --white: #ffffff;
+                --urgent-coral: #e07a5f;
+                --shadow-soft: rgba(198, 156, 183, 0.15);
+                --shadow-medium: rgba(198, 156, 183, 0.25);
+            }
+
+            body {
+                font-family: 'Poppins', sans-serif;
+                line-height: 1.7;
+                color: var(--charcoal);
+                background-color: var(--warm-cream);
+                overflow-x: hidden;
+            }
+
+            h1,
+            h2,
+            h3 {
+                font-family: 'Playfair Display', serif;
+            }
+
+            /* Three.js Canvas Background */
+            #bg-canvas {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: -1;
+                opacity: 0.4;
+            }
+
+            .quick-exit {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(
+                    135deg,
+                    var(--urgent-coral) 0%,
+                    #d55a3e 100%
+                );
+                color: var(--white);
+                border: none;
+                padding: 14px 28px;
+                font-size: 14px;
+                font-weight: 600;
+                border-radius: 50px;
+                cursor: pointer;
+                z-index: 1000;
+                box-shadow: 0 6px 20px rgba(224, 122, 95, 0.4);
+                transition: all 0.3s ease;
+                font-family: 'Poppins', sans-serif;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .quick-exit:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 8px 25px rgba(224, 122, 95, 0.5);
+            }
+
+            .quick-exit:focus {
+                outline: 3px solid var(--white);
+                outline-offset: 3px;
+            }
+
+            header {
+                position: relative;
+                background: linear-gradient(
+                        135deg,
+                        rgba(198, 156, 183, 0.95) 0%,
+                        rgba(160, 132, 202, 0.95) 100%
+                    ),
+                    url('https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=1600&q=80')
+                        center/cover;
+                color: var(--white);
+                padding: 140px 20px 100px;
+                text-align: center;
+                overflow: hidden;
+            }
+
+            header::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: radial-gradient(
+                    circle at top right,
+                    rgba(255, 255, 255, 0.1) 0%,
+                    transparent 60%
+                );
+            }
+
+            .header-content {
+                position: relative;
+                z-index: 1;
+                animation: fadeInUp 1s ease-out;
+            }
+
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            h1 {
+                font-size: 3rem;
+                margin-bottom: 20px;
+                font-weight: 700;
+                line-height: 1.2;
+                text-shadow: 2px 4px 12px rgba(0, 0, 0, 0.2);
+                animation: fadeInUp 1s ease-out 0.2s both;
+            }
+
+            .subtitle {
+                font-size: 1.3rem;
+                margin-bottom: 40px;
+                font-weight: 300;
+                max-width: 700px;
+                margin-left: auto;
+                margin-right: auto;
+                text-shadow: 1px 2px 8px rgba(0, 0, 0, 0.15);
+                animation: fadeInUp 1s ease-out 0.4s both;
+            }
+
+            .cta-group {
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+                max-width: 550px;
+                margin: 0 auto;
+                animation: fadeInUp 1s ease-out 0.6s both;
+            }
+
+            .btn {
+                padding: 18px 36px;
+                font-size: 1.125rem;
+                font-weight: 600;
+                border: none;
+                border-radius: 50px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                text-decoration: none;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                text-align: center;
+                font-family: 'Poppins', sans-serif;
+            }
+
+            .btn:focus {
+                outline: 3px solid var(--charcoal);
+                outline-offset: 3px;
+            }
+
+            .btn-primary {
+                background: linear-gradient(
+                    135deg,
+                    var(--white) 0%,
+                    var(--soft-peach) 100%
+                );
+                color: var(--deep-plum);
+                box-shadow: 0 6px 20px var(--shadow-medium);
+            }
+
+            .btn-primary:hover {
+                transform: translateY(-3px) scale(1.02);
+                box-shadow: 0 8px 25px var(--shadow-medium);
+            }
+
+            .btn-secondary {
+                background-color: transparent;
+                color: var(--white);
+                border: 2px solid var(--white);
+            }
+
+            .btn-secondary:hover {
+                background-color: rgba(255, 255, 255, 0.15);
+                transform: translateY(-3px);
+                box-shadow: 0 6px 20px rgba(255, 255, 255, 0.2);
+            }
+
+            .btn-emergency {
+                background: linear-gradient(
+                    135deg,
+                    var(--urgent-coral) 0%,
+                    #d55a3e 100%
+                );
+                color: var(--white);
+                box-shadow: 0 6px 20px rgba(224, 122, 95, 0.4);
+            }
+
+            .btn-emergency:hover {
+                transform: translateY(-3px) scale(1.02);
+                box-shadow: 0 8px 25px rgba(224, 122, 95, 0.5);
+            }
+
+            main {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 0 20px;
+                position: relative;
+                z-index: 1;
+            }
+
+            section {
+                margin: 100px 0;
+                animation: fadeIn 0.8s ease-out;
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                }
+                to {
+                    opacity: 1;
+                }
+            }
+
+            h2 {
+                font-size: 2.5rem;
+                margin-bottom: 32px;
+                color: var(--deep-plum);
+                text-align: center;
+                position: relative;
+                padding-bottom: 20px;
+            }
+
+            h2::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 80px;
+                height: 4px;
+                background: linear-gradient(
+                    90deg,
+                    var(--primary-rose) 0%,
+                    var(--accent-lavender) 100%
+                );
+                border-radius: 2px;
+            }
+
+            h3 {
+                font-size: 1.6rem;
+                margin-bottom: 16px;
+                color: var(--deep-plum);
+            }
+
+            .emergency-section {
+                background: linear-gradient(
+                        135deg,
+                        rgba(224, 122, 95, 0.95) 0%,
+                        rgba(213, 90, 62, 0.95) 100%
+                    ),
+                    url('https://images.unsplash.com/photo-1573497491208-6b1acb260507?w=1600&q=80')
+                        center/cover;
+                color: var(--white);
+                padding: 60px 40px;
+                border-radius: 24px;
+                margin: -60px 20px 80px;
+                box-shadow: 0 12px 40px rgba(224, 122, 95, 0.35);
+                position: relative;
+                overflow: hidden;
+            }
+
+            .emergency-section::before {
+                content: '';
+                position: absolute;
+                top: -50%;
+                right: -50%;
+                width: 200%;
+                height: 200%;
+                background: radial-gradient(
+                    circle,
+                    rgba(255, 255, 255, 0.1) 0%,
+                    transparent 70%
+                );
+                animation: pulse 8s ease-in-out infinite;
+            }
+
+            @keyframes pulse {
+                0%,
+                100% {
+                    transform: scale(1);
+                    opacity: 0.5;
+                }
+                50% {
+                    transform: scale(1.1);
+                    opacity: 0.8;
+                }
+            }
+
+            .emergency-section > * {
+                position: relative;
+                z-index: 1;
+            }
+
+            .emergency-section h2 {
+                color: var(--white);
+                font-size: 2rem;
+                margin-bottom: 16px;
+            }
+
+            .emergency-section h2::after {
+                background: var(--white);
+            }
+
+            .emergency-intro {
+                font-size: 1.2rem;
+                margin-bottom: 32px;
+                text-align: center;
+                font-weight: 300;
+            }
+
+            .emergency-grid {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 24px;
+                margin-top: 32px;
+            }
+
+            .emergency-card {
+                background-color: rgba(255, 255, 255, 0.15);
+                padding: 32px;
+                border-radius: 16px;
+                backdrop-filter: blur(10px);
+                border: 2px solid rgba(255, 255, 255, 0.2);
+                transition: all 0.3s ease;
+            }
+
+            .emergency-card:hover {
+                transform: translateY(-5px);
+                background-color: rgba(255, 255, 255, 0.2);
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            }
+
+            .emergency-card h3 {
+                color: var(--white);
+                font-size: 1.4rem;
+                margin-bottom: 16px;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+
+            .emergency-card p {
+                font-size: 2.5rem;
+                font-weight: 700;
+                margin-bottom: 20px;
+                letter-spacing: 3px;
+            }
+
+            .card-grid {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 28px;
+                margin-top: 48px;
+            }
+
+            .card {
+                background: linear-gradient(
+                    135deg,
+                    var(--white) 0%,
+                    var(--soft-peach) 100%
+                );
+                padding: 40px;
+                border-radius: 20px;
+                box-shadow: 0 6px 25px var(--shadow-soft);
+                transition: all 0.4s ease;
+                border: 1px solid rgba(198, 156, 183, 0.1);
+                position: relative;
+                overflow: hidden;
+            }
+
+            .card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(
+                    135deg,
+                    rgba(232, 180, 200, 0.1) 0%,
+                    rgba(160, 132, 202, 0.1) 100%
+                );
+                opacity: 0;
+                transition: opacity 0.4s ease;
+            }
+
+            .card:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 12px 35px var(--shadow-medium);
+            }
+
+            .card:hover::before {
+                opacity: 1;
+            }
+
+            .card > * {
+                position: relative;
+                z-index: 1;
+            }
+
+            .card-icon {
+                font-size: 3.5rem;
+                margin-bottom: 20px;
+                display: block;
+                background: linear-gradient(
+                    135deg,
+                    var(--primary-mauve) 0%,
+                    var(--accent-lavender) 100%
+                );
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+
+            .card h3 {
+                color: var(--deep-plum);
+                margin-bottom: 16px;
+                font-size: 1.5rem;
+            }
+
+            .card p {
+                color: var(--charcoal);
+                line-height: 1.8;
+                font-weight: 300;
+            }
+
+            .steps-list {
+                list-style: none;
+                counter-reset: step-counter;
+                max-width: 900px;
+                margin: 48px auto;
+            }
+
+            .steps-list li {
+                counter-increment: step-counter;
+                position: relative;
+                padding: 28px 28px 28px 90px;
+                margin-bottom: 24px;
+                background: linear-gradient(
+                    135deg,
+                    var(--white) 0%,
+                    var(--soft-peach) 100%
+                );
+                border-radius: 16px;
+                border-left: 5px solid var(--sage-green);
+                box-shadow: 0 4px 15px var(--shadow-soft);
+                transition: all 0.3s ease;
+            }
+
+            .steps-list li:hover {
+                transform: translateX(8px);
+                box-shadow: 0 6px 20px var(--shadow-medium);
+            }
+
+            .steps-list li::before {
+                content: counter(step-counter);
+                position: absolute;
+                left: 24px;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 48px;
+                height: 48px;
+                background: linear-gradient(
+                    135deg,
+                    var(--sage-green) 0%,
+                    var(--accent-lavender) 100%
+                );
+                color: var(--white);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: 700;
+                font-size: 1.3rem;
+                box-shadow: 0 4px 12px rgba(184, 212, 200, 0.4);
+            }
+
+            .rights-list,
+            .resources-list {
+                max-width: 900px;
+                margin: 48px auto;
+                list-style: none;
+            }
+
+            .rights-list li,
+            .resources-list li {
+                padding: 24px 24px 24px 70px;
+                margin-bottom: 16px;
+                background: linear-gradient(
+                    135deg,
+                    var(--white) 0%,
+                    var(--soft-peach) 100%
+                );
+                border-radius: 16px;
+                position: relative;
+                box-shadow: 0 4px 15px var(--shadow-soft);
+                transition: all 0.3s ease;
+                border-left: 4px solid var(--primary-rose);
+            }
+
+            .rights-list li:hover,
+            .resources-list li:hover {
+                transform: translateX(8px);
+                box-shadow: 0 6px 20px var(--shadow-medium);
+            }
+
+            .rights-list li::before {
+                content: '\f00c';
+                font-family: 'Font Awesome 6 Free';
+                font-weight: 900;
+                position: absolute;
+                left: 24px;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 36px;
+                height: 36px;
+                background: linear-gradient(
+                    135deg,
+                    var(--primary-rose) 0%,
+                    var(--primary-mauve) 100%
+                );
+                color: var(--white);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 0.9rem;
+            }
+
+            .resources-list li::before {
+                content: '\f4ad';
+                font-family: 'Font Awesome 6 Free';
+                font-weight: 900;
+                position: absolute;
+                left: 24px;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 36px;
+                height: 36px;
+                background: linear-gradient(
+                    135deg,
+                    var(--accent-lavender) 0%,
+                    var(--accent-periwinkle) 100%
+                );
+                color: var(--white);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 0.9rem;
+            }
+
+            .privacy-section {
+                background: linear-gradient(
+                    135deg,
+                    rgba(232, 180, 200, 0.15) 0%,
+                    rgba(160, 132, 202, 0.15) 100%
+                );
+                padding: 60px 40px;
+                border-radius: 24px;
+                text-align: center;
+                max-width: 900px;
+                margin: 0 auto;
+                border: 2px solid rgba(198, 156, 183, 0.2);
+                box-shadow: 0 8px 30px var(--shadow-soft);
+            }
+
+            .privacy-section h2 {
+                color: var(--deep-plum);
+                margin-bottom: 28px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 16px;
+            }
+
+            .privacy-section p {
+                color: var(--charcoal);
+                font-size: 1.15rem;
+                line-height: 1.9;
+                margin-bottom: 16px;
+                font-weight: 300;
+            }
+
+            .privacy-section p strong {
+                color: var(--deep-plum);
+                font-weight: 600;
+            }
+
+            footer {
+                background: linear-gradient(
+                    135deg,
+                    var(--deep-plum) 0%,
+                    var(--accent-periwinkle) 100%
+                );
+                color: var(--soft-peach);
+                padding: 60px 20px;
+                text-align: center;
+                margin-top: 100px;
+            }
+
+            footer p {
+                margin-bottom: 16px;
+                font-weight: 300;
+            }
+
+            footer strong {
+                font-weight: 600;
+            }
+
+            .disclaimer {
+                font-size: 0.9rem;
+                opacity: 0.85;
+                max-width: 900px;
+                margin: 24px auto 0;
+                line-height: 1.7;
+            }
+
+            .floating-shapes {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+                z-index: 0;
+                overflow: hidden;
+            }
+
+            .shape {
+                position: absolute;
+                border-radius: 50%;
+                opacity: 0.08;
+                animation: float 20s ease-in-out infinite;
+            }
+
+            .shape:nth-child(1) {
+                width: 300px;
+                height: 300px;
+                background: var(--primary-rose);
+                top: 10%;
+                left: -150px;
+                animation-delay: 0s;
+            }
+
+            .shape:nth-child(2) {
+                width: 200px;
+                height: 200px;
+                background: var(--accent-lavender);
+                top: 60%;
+                right: -100px;
+                animation-delay: 5s;
+            }
+
+            .shape:nth-child(3) {
+                width: 250px;
+                height: 250px;
+                background: var(--sage-green);
+                bottom: 20%;
+                left: 10%;
+                animation-delay: 10s;
+            }
+
+            @keyframes float {
+                0%,
+                100% {
+                    transform: translate(0, 0) rotate(0deg);
+                }
+                33% {
+                    transform: translate(30px, -50px) rotate(120deg);
+                }
+                66% {
+                    transform: translate(-20px, 20px) rotate(240deg);
+                }
+            }
+
+            @media (min-width: 768px) {
+                h1 {
+                    font-size: 3.5rem;
+                }
+
+                .subtitle {
+                    font-size: 1.4rem;
+                }
+
+                .cta-group {
+                    flex-direction: row;
+                    justify-content: center;
+                }
+
+                .emergency-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+
+                .card-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+
+                .steps-list li {
+                    padding: 32px 32px 32px 100px;
+                }
+            }
+
+            @media (min-width: 1024px) {
+                .card-grid {
+                    grid-template-columns: repeat(4, 1fr);
+                }
+
+                h1 {
+                    font-size: 4rem;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="bg-canvas"></canvas>
+
+        <div class="floating-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
+
+        <button
+            class="quick-exit"
+            id="quickExit"
+            aria-label="Salida rápida de emergencia"
+        >
+            <i class="fas fa-times-circle"></i> Salida Rápida
+        </button>
+
+        <header>
+            <div class="header-content">
+                <h1>Estás Segura Aquí</h1>
+                <p class="subtitle">
+                    Apoyo, información y recursos para mujeres en situación de
+                    violencia en Bolivia
+                </p>
+                <div class="cta-group">
+                    <a href="#emergencia" class="btn btn-primary">
+                        <i class="fas fa-hand-holding-heart"></i> Necesito ayuda
+                        ahora
+                    </a>
+                    <a href="#derechos" class="btn btn-secondary">
+                        <i class="fas fa-balance-scale"></i> Conocer mis
+                        derechos
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <div class="emergency-section" id="emergencia">
+            <h2><i class="fas fa-phone-volume"></i> Líneas de Emergencia</h2>
+            <p class="emergency-intro">
+                Si estás en peligro inmediato, llama ahora. No estás sola.
+            </p>
+            <div class="emergency-grid">
+                <div class="emergency-card">
+                    <h3><i class="fas fa-shield-alt"></i> Policía</h3>
+                    <p>110</p>
+                    <a href="tel:110" class="btn btn-emergency">
+                        <i class="fas fa-phone-alt"></i> Llama ahora
+                    </a>
+                </div>
+                <div class="emergency-card">
+                    <h3><i class="fas fa-headset"></i> Línea Gratuita</h3>
+                    <p>800-140-348</p>
+                    <a href="tel:800140348" class="btn btn-emergency">
+                        <i class="fas fa-phone-alt"></i> Llama ahora
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <main>
+            <section id="tipos-violencia">
+                <h2>Tipos de Violencia</h2>
+                <div class="card-grid">
+                    <div class="card">
+                        <i class="card-icon fas fa-hand-rock"></i>
+                        <h3>Violencia Física</h3>
+                        <p>
+                            Incluye golpes, empujones, patadas,
+                            estrangulamiento, uso de armas o cualquier acto que
+                            cause daño físico.
+                        </p>
+                    </div>
+                    <div class="card">
+                        <i class="card-icon fas fa-brain"></i>
+                        <h3>Violencia Psicológica</h3>
+                        <p>
+                            Insultos, humillaciones, amenazas, intimidación,
+                            control excesivo, aislamiento social y manipulación
+                            emocional.
+                        </p>
+                    </div>
+                    <div class="card">
+                        <i class="card-icon fas fa-wallet"></i>
+                        <h3>Violencia Económica</h3>
+                        <p>
+                            Control del dinero, prohibición de trabajar,
+                            destrucción de bienes, explotación económica o
+                            negación de recursos básicos.
+                        </p>
+                    </div>
+                    <div class="card">
+                        <i class="card-icon fas fa-mobile-alt"></i>
+                        <h3>Violencia Digital</h3>
+                        <p>
+                            Acoso en redes sociales, difusión de contenido
+                            íntimo sin consentimiento, control de dispositivos y
+                            amenazas en línea.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="que-hacer">
+                <h2>Qué Hacer Si Estás en Peligro</h2>
+                <ol class="steps-list">
+                    <li>
+                        Prioriza tu seguridad inmediata. Si es posible, aléjate
+                        del lugar donde ocurre la violencia.
+                    </li>
+                    <li>
+                        Llama a las líneas de emergencia (110 o 800-140-348) o
+                        pide ayuda a una persona de confianza.
+                    </li>
+                    <li>
+                        Si tienes lesiones, busca atención médica y solicita un
+                        certificado médico forense.
+                    </li>
+                    <li>
+                        Presenta una denuncia ante la Policía o la Fiscalía. No
+                        estás sola en este proceso.
+                    </li>
+                    <li>
+                        Considera solicitar medidas de protección legal para
+                        garantizar tu seguridad.
+                    </li>
+                    <li>
+                        Contacta con organizaciones de apoyo que pueden
+                        acompañarte en el proceso.
+                    </li>
+                </ol>
+            </section>
+
+            <section id="derechos">
+                <h2>Tus Derechos en Bolivia</h2>
+                <ul class="rights-list">
+                    <li>
+                        Tienes derecho a vivir sin violencia y a ser tratada con
+                        dignidad y respeto.
+                    </li>
+                    <li>
+                        Puedes presentar una denuncia sin necesidad de abogado o
+                        testigos.
+                    </li>
+                    <li>
+                        Tienes derecho a solicitar medidas de protección
+                        inmediatas.
+                    </li>
+                    <li>
+                        La atención médica y psicológica en casos de violencia
+                        es gratuita.
+                    </li>
+                    <li>
+                        Puedes acceder a refugios temporales si tu vida está en
+                        riesgo.
+                    </li>
+                    <li>
+                        Tienes derecho a recibir información clara sobre el
+                        proceso legal.
+                    </li>
+                </ul>
+                <p
+                    style="
+                        text-align: center;
+                        color: var(--charcoal);
+                        margin-top: 32px;
+                        font-size: 0.95rem;
+                        font-weight: 300;
+                    "
+                >
+                    <i class="fas fa-info-circle"></i> Esta información es
+                    orientativa. Para asesoramiento legal específico, contacta
+                    con un profesional.
+                </p>
+            </section>
+
+            <section id="prevencion">
+                <h2>Prevención y Planificación de Seguridad</h2>
+                <div class="card-grid">
+                    <div class="card">
+                        <i class="card-icon fas fa-route"></i>
+                        <h3>Plan de Seguridad</h3>
+                        <p>
+                            Identifica lugares seguros en tu hogar y rutas de
+                            escape. Ten preparados documentos importantes y
+                            números de emergencia.
+                        </p>
+                    </div>
+                    <div class="card">
+                        <i class="card-icon fas fa-users"></i>
+                        <h3>Red de Apoyo</h3>
+                        <p>
+                            Comparte una palabra clave con personas de confianza
+                            para pedir ayuda discretamente. Mantén contactos de
+                            emergencia actualizados.
+                        </p>
+                    </div>
+                    <div class="card">
+                        <i class="card-icon fas fa-exclamation-triangle"></i>
+                        <h3>Señales de Alerta</h3>
+                        <p>
+                            Control excesivo, celos intensos, aislamiento de
+                            amigos y familia, amenazas, y violencia que aumenta
+                            en frecuencia o intensidad.
+                        </p>
+                    </div>
+                    <div class="card">
+                        <i class="card-icon fas fa-file-alt"></i>
+                        <h3>Documentos Importantes</h3>
+                        <p>
+                            Ten copias de: cédula, certificados de nacimiento,
+                            documentos de propiedad, registros médicos y dinero
+                            de emergencia.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="recursos">
+                <h2>Recursos de Apoyo</h2>
+                <ul class="resources-list">
+                    <li>
+                        <strong
+                            >Servicios Legales Integrales Municipales
+                            (SLIM):</strong
+                        >
+                        Atención legal gratuita en municipios de Bolivia
+                    </li>
+                    <li>
+                        <strong>Centros de Acogida:</strong> Refugios temporales
+                        para mujeres en situación de violencia
+                    </li>
+                    <li>
+                        <strong>Defensoría de la Niñez y Adolescencia:</strong>
+                        Protección para menores afectados por violencia
+                    </li>
+                    <li>
+                        <strong>Organizaciones de la Sociedad Civil:</strong>
+                        ONG's que brindan apoyo psicológico, legal y social
+                    </li>
+                    <li>
+                        <strong>Ministerio Público - Fiscalía:</strong>
+                        Presentación de denuncias y seguimiento de casos
+                    </li>
+                    <li>
+                        <strong>Servicio Plurinacional de la Mujer:</strong>
+                        Asesoramiento y acompañamiento integral
+                    </li>
+                </ul>
+                <p
+                    style="
+                        text-align: center;
+                        margin-top: 40px;
+                        color: var(--charcoal);
+                        font-size: 1.15rem;
+                        font-weight: 300;
+                    "
+                >
+                    <i class="fas fa-heart"></i> No estás sola. Hay personas y
+                    organizaciones dispuestas a ayudarte.
+                </p>
+            </section>
+
+            <section id="privacidad">
+                <div class="privacy-section">
+                    <h2>
+                        <i class="fas fa-lock"></i> Tu Privacidad y Seguridad
+                    </h2>
+                    <p>
+                        <strong
+                            >Esta página no recopila ningún dato
+                            personal.</strong
+                        >
+                    </p>
+                    <p>Puedes usar este sitio de forma anónima y segura.</p>
+                    <p>
+                        Recuerda usar el botón "Salida Rápida" si necesitas
+                        cerrar esta página inmediatamente.
+                    </p>
+                    <p>
+                        Considera borrar el historial de navegación si compartes
+                        tu dispositivo.
+                    </p>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>
+                <strong
+                    ><i class="fas fa-info-circle"></i> Este sitio es solo
+                    informativo y educativo</strong
+                >
+            </p>
+            <p>
+                No reemplaza la atención profesional legal, médica o psicológica
+            </p>
+            <p class="disclaimer">
+                Si estás en peligro inmediato, llama al 110 o al 800-140-348.
+                Este sitio está diseñado con accesibilidad y privacidad en
+                mente. Ningún dato es almacenado ni compartido. Tu seguridad es
+                lo más importante.
+            </p>
+        </footer>
+
+        <script>
+            // Three.js Background Animation
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(
+                75,
+                window.innerWidth / window.innerHeight,
+                0.1,
+                1000
+            );
+            const renderer = new THREE.WebGLRenderer({
+                canvas: document.getElementById('bg-canvas'),
+                alpha: true,
+                antialias: true
+            });
+
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            camera.position.z = 30;
+
+            // Create floating particles
+            const particlesGeometry = new THREE.BufferGeometry();
+            const particlesCount = 100;
+            const posArray = new Float32Array(particlesCount * 3);
+
+            for (let i = 0; i < particlesCount * 3; i++) {
+                posArray[i] = (Math.random() - 0.5) * 100;
+            }
+
+            particlesGeometry.setAttribute(
+                'position',
+                new THREE.BufferAttribute(posArray, 3)
+            );
+
+            const particlesMaterial = new THREE.PointsMaterial({
+                size: 0.3,
+                color: 0xc69cb7,
+                transparent: true,
+                opacity: 0.6
+            });
+
+            const particlesMesh = new THREE.Points(
+                particlesGeometry,
+                particlesMaterial
+            );
+            scene.add(particlesMesh);
+
+            // Animation loop
+            function animate() {
+                requestAnimationFrame(animate);
+
+                particlesMesh.rotation.y += 0.0005;
+                particlesMesh.rotation.x += 0.0003;
+
+                renderer.render(scene, camera);
+            }
+
+            animate();
+
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+
+            // Quick Exit functionality
+            document
+                .getElementById('quickExit')
+                .addEventListener('click', function () {
+                    window.location.replace('https://www.weather.com');
+                });
+
+            // Smooth scroll for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(
+                        this.getAttribute('href')
+                    );
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // Keyboard shortcut for Quick Exit (Esc key)
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') {
+                    window.location.replace('https://www.weather.com');
+                }
+            });
+
+            // Intersection Observer for scroll animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -100px 0px'
+            };
+
+            const observer = new IntersectionObserver(function (entries) {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            document
+                .querySelectorAll(
+                    '.card, .steps-list li, .rights-list li, .resources-list li'
+                )
+                .forEach((el) => {
+                    el.style.opacity = '0';
+                    el.style.transform = 'translateY(20px)';
+                    el.style.transition = 'all 0.6s ease-out';
+                    observer.observe(el);
+                });
+        </script>
+    </body>
+</html>
